@@ -1,15 +1,13 @@
 package com.reymi.tipmerge.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_generator")
+    @SequenceGenerator(name = "customer_generator", sequenceName = "customer_SEQ", allocationSize = 1)
     private Long id;
     private String pseudo;
     private String firstname;
