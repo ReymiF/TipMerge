@@ -16,18 +16,36 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public Optional<Customer> getCustomerById(Long id){
-        return customerRepository.findById(id);
-    }
-
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
-    }
-
+    // Create
     public Customer createCustomer(Customer customer) {
         return customerRepository.save(customer);
     }
 
+    // Read
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
+    }
+    public Optional<Customer> getCustomerById(Long id){
+        return customerRepository.findById(id);
+    }
+
+    // Update
+    @Transactional
+    public void updateById(Long id, Customer updatedCustomer) {
+        // check if customer exists
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with id " + id));
+
+        // update customer's properties
+        customer.setPseudo(updatedCustomer.getPseudo());
+        customer.setFirstname(updatedCustomer.getFirstname());
+        customer.setLastname(updatedCustomer.getLastname());
+        customer.setEmail(updatedCustomer.getEmail());
+
+        customerRepository.save(customer);
+    }
+
+    // Delete
     @Transactional
     public void deleteById(Long id) {
         // check if customer exists
